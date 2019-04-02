@@ -1,15 +1,33 @@
-import axios from 'axios';
+import Search from './models/Search';
 
-async function getResults(query) {
-	const key = '3d02782f74a7fbc128e61977c8614a41';
+/** Global state of app */
+/** Search object
+ * 
+ *  Current recipe object
+ *  Shopping list object
+ *  Liked recipes
+ */
 
-	try {
-		const res = await axios(`https://www.food2fork.com/api/search?key=${key}&q=${query}`);
-		const recipes = res.data.recipes;
-		console.log(recipes);
-	} catch (error) {
-		alert(error);
+const state = {};
+const controlSearch = async () => {
+	// Get query from view
+	const query = 'pizza'; //TODO
+
+	if (query) {
+		// New search object; Add to state
+		state.search = new Search(query);
+
+		// Prepare UI for results
+
+		// Search for recipes
+		await state.search.getResults();
+
+		// Render results on UI
+		console.log(state.search.result);
 	}
-}
+};
 
-getResults('chocolate cake');
+document.querySelector('.search').addEventListener('submit', (e) => {
+	e.preventDefault();
+	controlSearch();
+});
