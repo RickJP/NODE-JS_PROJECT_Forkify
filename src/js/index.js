@@ -1,7 +1,15 @@
-// Global app controller
+import axios from 'axios';
 
-import x from './test';
+async function getResults(query) {
+	const key = '3d02782f74a7fbc128e61977c8614a41';
 
-const y = 20;
+	try {
+		const res = await axios(`https://www.food2fork.com/api/search?key=${key}&q=${query}`);
+		const recipes = res.data.recipes;
+		console.log(recipes);
+	} catch (error) {
+		alert(error);
+	}
+}
 
-console.log(`Imported ${x} from another module. Y is ${y}`);
+getResults('chocolate cake');
