@@ -1,4 +1,6 @@
 import Search from './models/Search';
+import { elements } from './views/base';
+import * as searchView from './views/searchView';
 
 /** Global state of app */
 /** Search object
@@ -11,23 +13,26 @@ import Search from './models/Search';
 const state = {};
 const controlSearch = async () => {
 	// Get query from view
-	const query = 'pizza'; //TODO
+	const query = searchView.getInput(); //TODO
 
 	if (query) {
 		// New search object; Add to state
 		state.search = new Search(query);
 
 		// Prepare UI for results
+		searchView.clearInput();
+		searchView.claearResults();
 
 		// Search for recipes
 		await state.search.getResults();
 
 		// Render results on UI
-		console.log(state.search.result);
+
+		searchView.renderResults(state.search.result);
 	}
 };
 
-document.querySelector('.search').addEventListener('submit', (e) => {
+elements.searchForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	controlSearch();
 });
